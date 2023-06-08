@@ -1,10 +1,12 @@
 import sqlite3 as sql
 import os
 
-def createDB(): # Se crea la base de datos si es que no existe
+# Función para crear la base de datos si no existe
+def createDB(): 
     conn = sql.connect('Gastos.db') 
     cursor = conn.cursor()
     
+    # Crear tabla Gastos si no existe
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Gastos (
             Id INTEGER PRIMARY KEY NOT NULL,
@@ -17,6 +19,7 @@ def createDB(): # Se crea la base de datos si es que no existe
     conn.commit()
     conn.close()
 
+# Función para ingresar un gasto
 def ingresar_gasto():
     limpiar_consola()
     tipo = input('Ingrese el tipo de gasto Comida, Transporte, Salida, Otros: ')
@@ -35,6 +38,7 @@ def ingresar_gasto():
     print("Gasto cargado exitosamente.")
 
 
+# Función para cargar dinero
 def cargar_plata():
     limpiar_consola()
     monto = float(input("Ingrese el monto a cargar: "))
@@ -51,6 +55,7 @@ def cargar_plata():
     print("Carga de plata realizada exitosamente.")
 
 
+# Función para ver el total de dinero disponible
 def ver_plata():
     conn = sql.connect('Gastos.db')
     cursor = conn.cursor()
@@ -63,6 +68,8 @@ def ver_plata():
     
     conn.close()
 
+
+# Función para ver todos los gastos registrados
 def ver_gastos():
     conn = sql.connect('Gastos.db')
     cursor = conn.cursor()
@@ -89,9 +96,7 @@ def ver_gastos():
     consulta.lower()
     carpetaDesktop = r'C:\Users\Mateo\Desktop'
     
-    
     if consulta == 'si':
-        
         archivo = os.path.join(carpetaDesktop, "gastos.txt")
 
         with open(archivo, "w") as file:
@@ -106,13 +111,16 @@ def ver_gastos():
         print("Se ha generado el archivo 'gastos.txt' en el escritorio con la información de los gastos.")
     else:
         pass
-def mostrar_menu(): # Menu para saber como manejarme en el programa
+
+# Función para mostrar el menú de opciones
+def mostrar_menu(): 
     print("1. Cargar gasto")
     print("2. Cargar plata")
     print("3. Ver plata disponible")
     print("4. Ver gastos")
     print("5. Salir")
 
+# Función para ejecutar la opción seleccionada
 def ejecutar_opcion(opcion):
     if opcion == "1":
         ingresar_gasto()
@@ -129,11 +137,11 @@ def ejecutar_opcion(opcion):
     
     return True
 
-
-def limpiar_consola(): #limpiar consola asi puedo tener algo mas comodo de leer (preparado para todos los sitemas operativos)
-    if os.name == 'posix':  # Sistema UNIX/Linux/Mac
+# Función para limpiar la consola
+def limpiar_consola(): 
+    if os.name == 'posix':  
         _ = os.system('clear')
-    else:  # Windows
+    else: 
         _ = os.system('cls')
 
 
@@ -146,5 +154,6 @@ if __name__ == '__main__':
         
         if not ejecutar_opcion(opcion):
             break
+
 
 
